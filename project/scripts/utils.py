@@ -21,20 +21,50 @@ def get_next_matches_from_date() -> dict:
         print(build_calendar_event(parse_match_element(element=element)))
 
 
-def get_match_datetime(text: str):
+def get_match_datetime(text: str) -> datetime:
+    """
+    Function that receives part of the web scapped text and defines the date and time 
+    for the game.
+
+    Parameters
+    ----------
+        text : str
+            Web scrapped text that contains the information of the time and date of the game.
+
+    Returns
+    -------
+        game_datetime : datetime
+            Text converted into datetime object.
+
+    """
+
     weekday_dt, time = text.lower()[3:].split(" - ")
     dt_str = weekday_dt.split(" ")[-1]
 
     time_splitted = [int(value) for value in time.split(".")]
     hour, minutes = time_splitted[0], time_splitted[1] if len(time_splitted) > 1 else 0
 
-    dt = datetime.strptime(f"{dt_str} {hour}:{minutes}", "%d/%m/%Y %H:%M")
-    dt = timezone("America/Buenos_Aires").localize(dt)
+    game_datetime = datetime.strptime(f"{dt_str} {hour}:{minutes}", "%d/%m/%Y %H:%M")
+    game_datetime = timezone("America/Buenos_Aires").localize(game_datetime)
 
-    return dt
+    return game_datetime
 
 
-def home_or_away(match_title: str) -> bool:
+def home_or_away(match_title: str) -> str:
+    """
+    Receives the match title as a string and difines if it is an 'away' or 'home'
+    game for River Plate.
+
+    Parameters
+    ----------
+        match_title : str
+            Match title which tells which teams are playing.
+    
+    Returns
+    -------
+        output : str ('home' or 'away')
+            Defines if it is a home or away game based on it's title.
+    """
     teams = [value.strip().lower() for value in match_title.split("Vs.")]
     return "home" if teams[0] == "river plate" else "away"
 
