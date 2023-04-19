@@ -20,8 +20,11 @@ def build_calendar_event(match_data: dict, match_duration_hrs: int = 2) -> dict:
             un evento a través de la API de Google Calendar con sus valores
             completados.
     """
-    match_start = match_data.get("datetime").strftime("%Y-%m-%dT%H:%M:%S%z")
-    match_end = (match_data.get("datetime") + timedelta(hours=2)).strftime(
+    match_start = match_data.get("match_dt")
+    match_end = (
+            match_data.get("match_dt").strptime("%Y-%m-%dT%H:%M:%S%z")
+        +   timedelta(hours=2)
+        ).strftime(
         "%Y-%m-%dT%H:%M:%S%z"
     )
     calendar_event = {
