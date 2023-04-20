@@ -6,25 +6,24 @@ from typing import Tuple
 from bs4 import BeautifulSoup
 from pytz import timezone
 
-from google_calendar import build_calendar_event
-
+URL= "https://www.cariverplate.com.ar/calendario-de-partidos"
 
 def get_next_matches_from_date() -> dict:
     response = requests.get(
-        "https://www.cariverplate.com.ar/calendario-de-partidos"
+        url= URL
     ).text.encode("utf-8")
 
     soup = BeautifulSoup(response, "html.parser")
     elements = soup.find_all(class_="d_calendario")
 
     for element in elements:
-        print(parse_match_element(element=element))
-
+        # TODO proceso de guardado en alguna base de datos
+        ...
 
 def get_match_datetime(text: str) -> datetime:
     """
     Función que recibe texto desestructurado de la fecha y hora del
-    partido y devuelve un objeto datetime con timezone de America/Buenos_Aires
+    partido y devuelve un objeto datetime con timezone de 'America/Buenos_Aires'
 
     Parameters
     ----------
@@ -63,7 +62,7 @@ def get_rival_and_condition(match_title: str) -> Tuple[str, str]:
         rival : str
             Rival to play against
         condition : str ('home', 'away)
-            Condition in which River plays.
+            Condition in which River Plate plays.
     """
 
     match_title = match_title.lower()
