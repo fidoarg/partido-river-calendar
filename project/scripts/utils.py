@@ -15,10 +15,12 @@ def get_next_matches_from_date() -> dict:
 
     soup = BeautifulSoup(response, "html.parser")
     elements = soup.find_all(class_="d_calendario")
-
+    matches = list()
     for element in elements:
-        # TODO proceso de guardado en alguna base de datos
-        ...
+       match = parse_match_element(element= element)
+       matches.append(match)
+    
+    return matches
 
 def get_match_datetime(text: str) -> datetime:
     """

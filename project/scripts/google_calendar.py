@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 def build_calendar_event(match_data: dict, match_duration_hrs: int = 2) -> dict:
@@ -22,7 +22,7 @@ def build_calendar_event(match_data: dict, match_duration_hrs: int = 2) -> dict:
     """
     match_start = match_data.get("match_dt")
     match_end = (
-            match_data.get("match_dt").strptime("%Y-%m-%dT%H:%M:%S%z")
+            datetime.strptime(match_data.get("match_dt"), "%Y-%m-%dT%H:%M:%S%z")
         +   timedelta(hours=2)
         ).strftime(
         "%Y-%m-%dT%H:%M:%S%z"
